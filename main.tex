@@ -1,0 +1,1567 @@
+%!TEX TS-program = xelatex
+\documentclass[10pt,oneside]{scrbook}
+
+%% Required Packages
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{lipsum}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+%% Page Layout for A4
+\geometry{
+  paper=a4paper,
+  top=25mm,
+  bottom=25mm,
+  left=25mm,
+  right=25mm,
+}
+
+%% Color Definitions
+\definecolor{primary}{HTML}{2A4D69}
+\definecolor{secondary}{HTML}{4B86B4}
+\definecolor{accent}{HTML}{ADCBE3}
+\definecolor{bg}{HTML}{F1F6F9}
+\definecolor{boxborder}{HTML}{2A4D69}
+\definecolor{cmdframe}{HTML}{00ACC1}
+
+%% Hyperref Settings
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  urlcolor=secondary,
+  citecolor=primary
+}
+
+%% Chapter and Section Styling
+\titleformat{\chapter}[display]{\bfseries\Huge\color{primary}}{\filleft\MakeUppercase{\chaptertitlename}~\thechapter}{1ex}{\titlerule[1pt]\vspace{1ex}\filleft}
+
+\titleformat{\section}{\Large\bfseries\color{secondary}}{\thesection}{1em}{}
+
+%% Listings Style
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{primary}\bfseries,
+  commentstyle=\color{accent},
+  stringstyle=\color{secondary},
+  backgroundcolor=\color{bg},
+  frame=single,
+  rulecolor=\color{boxborder},
+  breaklines=true,
+  showstringspaces=false
+}
+
+%% Tcolorbox Styles
+\newtcolorbox{cmdbox}{
+  colback=bg,
+  colframe=primary,
+  boxrule=1pt,
+  arc=4pt,
+  left=4pt,right=4pt,top=4pt,bottom=4pt,
+  sharp corners
+}
+
+\newtcolorbox{commanddetails}{
+  colback=accent!10,
+  colframe=secondary,
+  boxrule=0.5pt,
+  arc=3pt,
+  left=6pt,right=6pt,top=6pt,bottom=6pt,
+  fonttitle=\bfseries\color{secondary},
+  title=Details
+}
+
+%% Title Metadata
+\title{Linux Command Line Field Guide}
+\author{Aman Arabzadeh}
+\date{\today}
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\Huge\bfseries\color{primary}Terminal Toolkit:\\51 Essential Linux Commands\par}
+  \vspace{1cm}
+  {\Large\color{secondary}A Compact Reference for Everyday Use\par}
+  \vspace{2.5cm}
+  {\Large\textbf{Aman Arabzadeh}\par}
+  \vspace{1cm}
+  {\large\today\par}
+  \vfill
+  \begin{minipage}{0.85\textwidth}
+    \small
+    \textbf{What is the CLI?}\\
+    The Command Line Interface (CLI) is a powerful way to interact with your Linux system using text-based commands. Unlike graphical interfaces, the CLI gives you speed, precision, and full control. This guide covers 51 essential Linux commands to help you work faster, automate tasks, and understand your system at a deeper level.
+  \end{minipage}
+\end{titlepage}
+
+
+
+\tableofcontents
+\small
+
+\mainmatter
+%===============================================================================
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+Welcome to my \textit{Pocket Guide to Essential Linux Commands}. \\ 
+I earned my Computer Engineering degree in 2024, and throughout both school and work, Linux commands have been a core part of my daily toolkit. They’re fast, flexible, and let you get more done without relying on a mouse.
+This guide is built for beginners who want a solid starting point, and for experienced users who need a quick way to refresh their memory. Each command comes with a short description, practical examples, and tips to help you get things done faster.
+\\
+At the end, there’s a cheat sheet that pulls everything together in one place. Let’s get started and take control of the command line.
+
+
+
+
+
+%-------------------------------------------------------------------------------
+\chapter{Navigation \& File Information}
+%-------------------------------------------------------------------------------
+
+This chapter covers the basic commands you need to move around in the Linux filesystem and learn about files. Each section shows:
+\begin{itemize}
+  \item What the command does.
+  \item How to use it (syntax and options).
+  \item A simple example with expected output.
+\end{itemize}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{pwd}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!pwd! \\
+  \textbf{What it does:} Shows the \emph{full path} of the directory you are currently in.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    If you ever forget where you are in the filesystem, \texttt{pwd} tells you exactly which directory you are in.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ pwd
+/home/user/projects
+  \end{lstlisting}
+  Here, you see you are in the "projects" folder inside "user".
+
+  \subsection*{Tip}
+  To get the parent directory (one level up), you can run:
+  \begin{lstlisting}[language=bash]
+$ dirname "$PWD"
+/home/user
+  \end{lstlisting}
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{cd}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!cd [DIR]! \\
+  \textbf{What it does:} Changes your current directory to the one you specify.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Uses}
+  \begin{itemize}
+    \item \lstinline!cd /etc!: Go directly to the \texttt{/etc} folder.
+    \item \lstinline!cd ..!: Move one level up (to the parent directory).
+    \item \lstinline!cd -!: Jump back to the previous directory you were in.
+    \item \lstinline!cd!: With no arguments, go to your home directory (e.g. \texttt{/home/username}).
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ cd /etc
+$ pwd
+/etc
+
+$ cd ..
+$ pwd
+/
+  \end{lstlisting}
+
+  \subsection*{Tips}
+  \begin{itemize}
+    \item You can use \texttt{Tab} for filename completion. Type part of the folder name, then press \texttt{Tab}.
+    \item Use \lstinline!cd ~/Downloads! to go to the Downloads folder in your home directory.
+  \end{itemize}
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{ls}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!ls [OPTIONS] [FILE or DIRECTORY]! \\
+  \textbf{What it does:} Lists the files and folders inside a directory.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Key Options}
+  \begin{itemize}
+    \item \lstinline!-l!: Long format (shows permissions, owner, size, and modification date).
+    \item \lstinline!-a!: Show \emph{all} files, including hidden ones (those starting with a dot).
+    \item \lstinline!-h!: With \lstinline!-l!, show sizes in human-readable form (KB, MB).
+  \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ ls
+Documents  Downloads  script.sh
+
+$ ls -l
+-rw-r--r-- 1 user user 1024 May 10 08:00 script.sh
+ drwxr-xr-x 2 user user 4096 May 12 14:21 Documents
+
+$ ls -lah
+total 20K
+drwxr-xr-x 4 user user 4.0K May 15 09:30 .
+-rw-r--r-- 1 user user 1.0K May 10 08:00 script.sh
+drwxr-xr-x 2 user user 4.0K May 12 14:21 Documents
+  \end{lstlisting}
+  \subsection*{Tip}
+  Combine options: \lstinline!ls -alh! shows everything with details and human-readable sizes.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{tree}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!tree [OPTIONS] [DIRECTORY]! \\
+  \textbf{What it does:} Draws a visual tree of the directory and its subdirectories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why it's useful}
+  Quickly see the folder structure and how files are organized.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ tree -L 2
+.
+├── Documents
+│   ├── report.docx
+│   └── notes.txt
+└── script.sh
+  \end{lstlisting}
+  Shows two levels deep (top folder and one level of subfolders).
+
+  \subsection*{Tip}
+  Install if missing: \lstinline!sudo apt install tree! (Debian/Ubuntu).
+  Use \lstinline!-d! to list directories only (skip files).
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{file}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!file [OPTIONS] FILENAME! \\
+  \textbf{What it does:} Examines a file and tells you its type (text, image, executable, etc.).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ file script.sh
+script.sh: Bourne-Again shell script, ASCII text executable
+
+$ file image.png
+image.png: PNG image data, 800 x 600, 8-bit/color RGBA, non-interlaced
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Use \lstinline!-i! to show the MIME type instead of a description:
+  \begin{lstlisting}[language=bash]
+$ file -i script.sh
+script.sh: text/x-shellscript; charset=us-ascii
+  \end{lstlisting}
+\end{commanddetails}
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+\chapter{File Manipulation}
+%-------------------------------------------------------------------------------
+
+This chapter covers how to copy, move, delete, and create files/directories safely.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{cp}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!cp [OPTIONS] SOURCE... DESTINATION! \\
+  \textbf{What it does:} Copies files or directories from one place to another.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-r!: Copy directories recursively (include all contents).
+    \item \lstinline!-i!: Prompt before overwrite.
+    \item \lstinline!-v!: Verbose mode, show each file copied.
+  \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ cp file.txt /backup/
+Copy "file.txt" into the /backup/ folder.
+
+$ cp -r project/ /backup/project/
+Copy the project folder and all its files into /backup/project/.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Use \lstinline!cp -riv! to be safe and see progress.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{mv}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!mv [OPTIONS] SOURCE... DESTINATION! \\
+  \textbf{What it does:} Moves or renames files and directories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-i!: Prompt before overwrite.
+    \item \lstinline!-n!: Do not overwrite existing files.
+    \item \lstinline!-v!: Show what is happening.
+  \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ mv oldname.txt newname.txt
+Rename a file.
+
+$ mv file.txt /tmp/
+Move file.txt into the /tmp directory.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Use \lstinline!mv -iv! to avoid mistakes and see operations.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{rm}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!rm [OPTIONS] FILE or DIRECTORY! \\
+  \textbf{What it does:} Deletes files or directories (be very careful!).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-r!: Remove directories and their contents recursively.
+    \item \lstinline!-i!: Ask before each removal.
+    \item \lstinline!-f!: Force deletion without prompts.
+  \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ rm file.txt
+Delete a single file.
+
+$ rm -r old_folder/
+Delete a folder and everything in it.
+  \end{lstlisting}
+
+  \subsection*{Warning}
+  Never run \lstinline!rm -rf /! unless you know exactly what you’re doing!
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{mkdir}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!mkdir [OPTIONS] DIRECTORY...! \\
+  \textbf{What it does:} Creates new directories (folders).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-p!: Create parent directories as needed.
+    \item \lstinline!-v!: Show each directory as it is created.
+  \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ mkdir newdir
+Create a single folder named "newdir".
+
+$ mkdir -p project/src/utils
+Create project, src, and utils folders in one go.
+  \end{lstlisting}
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{rmdir}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!rmdir [OPTIONS] DIRECTORY...! \\
+  \textbf{What it does:} Removes empty directories only.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ rmdir olddir
+Remove the folder "olddir" if it is empty.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  To delete non-empty folders, use \lstinline!rm -r! instead.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{touch}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!touch [OPTIONS] FILE...! \\
+  \textbf{What it does:} Creates an empty file or updates the timestamp on existing files.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ touch notes.txt
+Create an empty file named "notes.txt" or update its modification time.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Use \lstinline!-c! to only change timestamps and not create files.
+\end{commanddetails}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\chapter{Viewing \& Editing Text}
+%-------------------------------------------------------------------------------
+
+This chapter shows commands to view, navigate, and edit text files directly from the terminal.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{cat}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!cat [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Joins files together and prints their contents to the screen.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quick way to see small files or combine multiple files.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ cat file.txt
+This is the first line.
+This is the second line.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  For long files, pipe through a pager:
+  \begin{lstlisting}[language=bash]
+$ cat file.txt | less
+  \end{lstlisting}
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{head}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!head [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Shows the first part of files (by default 10 lines).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-n N!: Show the first N lines.
+    \item \lstinline!-c N!: Show the first N bytes.
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ head -n 20 logfile.log
+  [...] (first 20 lines) [...]  
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Use \lstinline!head -c 200 file.txt! to see the first 200 bytes.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{tail}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!tail [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Shows the last part of files (default 10 lines).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Common Options}
+  \begin{itemize}
+    \item \lstinline!-n N!: Show the last N lines.
+    \item \lstinline!-f!: Follow the file as it grows (live updates).
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ tail -f /var/log/syslog
+  (shows new log entries in real time)
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Press \texttt{Ctrl+C} to stop following.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{less}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!less [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Opens files in an interactive viewer, letting you scroll, search, and navigate.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Key Commands}
+  \begin{itemize}
+    \item \texttt{Space}: Next page
+    \item \texttt{b}: Previous page
+    \item \lstinline!/pattern!: Search forward for "pattern".
+    \item \lstinline!?pattern?: Search backward.
+    \item \texttt{q}: Quit less
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ less README.md
+  \end{lstlisting}
+
+  \subsection*{Tip}
+  Combine with pipes: \lstinline!grep "TODO" *.txt | less! to search across files interactively.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{nano}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!nano [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Opens a simple terminal-based text editor for creating and modifying files.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Basic Controls}
+  \begin{itemize}
+    \item \texttt{Ctrl+O}: Save (Write Out)
+    \item \texttt{Ctrl+X}: Exit
+    \item \texttt{Ctrl+K}: Cut line
+    \item \texttt{Ctrl+U}: Paste line
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ nano script.sh
+  \end{lstlisting}
+  Opens \texttt{script.sh} (or creates it if missing).
+
+  \subsection*{Tip}
+  Use \texttt{Ctrl+G} to view help within Nano.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\chapter{Searching \& Filtering}
+%-------------------------------------------------------------------------------
+
+This chapter shows how to find and narrow down text and files using powerful command-line tools.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{grep}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!grep [OPTIONS] PATTERN [FILE]...! \\
+  \textbf{What it does:} Searches one or more files for lines that match a text pattern.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly locate words or phrases inside files—even across many subdirectories.
+
+  \subsection*{Common options}
+  \begin{itemize}
+    \item \lstinline!-R!: Search recursively in all subfolders.
+    \item \lstinline!-i!: Ignore case (find “Error” or “error”).
+    \item \lstinline!-n!: Show the line number of each match.
+    \item \lstinline!-C N!: Display N lines of context around each match.
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ grep -Rni "TODO" .
+./script.sh:12:# TODO: add error handling
+./docs/readme.md:5:- [ ] TODO: update install steps
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!grep -C 2 "pattern" file.txt! to see two lines before and after each hit.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{find}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!find PATH [OPTIONS]! \\
+  \textbf{What it does:} Locates files or directories matching name, type, size, date, etc.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Search anywhere on your system with flexible filters.
+
+  \subsection*{Common options}
+  \begin{itemize}
+    \item \lstinline!-name PATTERN!: Match names (e.g. \lstinline!"*.log"!).
+    \item \lstinline!-type f|d!: Only files (f) or directories (d).
+    \item \lstinline!-mtime -N!: Modified within the last N days.
+    \item \lstinline!-exec CMD {} \;!: Run a command on each matched item.
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ find /var -name "*.log" -mtime -7
+/var/log/syslog
+/var/log/auth.log
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!find . -type f -size +10M! to find files larger than 10 MB.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{locate}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!locate [OPTIONS] PATTERN! \\
+  \textbf{What it does:} Quickly looks up filenames using a prebuilt database.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Much faster than \texttt{find}—ideal for routine filename searches.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ locate bashrc
+/home/user/.bashrc
+/etc/skel/.bashrc
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Run \lstinline!sudo updatedb! to refresh the database before searching.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{wc}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!wc [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Counts lines, words, and bytes (or characters) in files.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Get quick stats—useful for checking script lengths or log sizes.
+
+  \subsection*{Common options}
+  \begin{itemize}
+    \item \lstinline!-l!: Count lines only.
+    \item \lstinline!-w!: Count words only.
+    \item \lstinline!-m!: Count characters.
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ wc -l *.txt
+     30 notes.txt
+     15 summary.txt
+     45 total
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Pipe other commands into \texttt{wc}; e.g., \lstinline!grep -c "error" *.log! counts error lines.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{sort}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!sort [OPTIONS] [FILE]...! \\
+  \textbf{What it does:} Orders lines of text alphabetically or numerically.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Prepare data for reports, remove duplicates, or sort logs chronologically.
+
+  \subsection*{Common options}
+  \begin{itemize}
+    \item \lstinline!-n!: Numeric sort (e.g. numbers instead of text).
+    \item \lstinline!-r!: Reverse order.
+    \item \lstinline!-k N!: Sort by the Nth field (column).
+  \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ sort names.txt | uniq
+user
+Bob
+Charlie
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To reverse-sort numerically on column 2: \\lstinline!sort -k2 -nr data.csv!.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\chapter{Shell \& Environment}
+%-------------------------------------------------------------------------------
+
+This chapter covers commands for printing messages, managing variables, and customizing your shell session.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{echo}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!echo [OPTIONS] [STRING]...! \\
+  \textbf{What it does:} Prints text or the value of variables to your terminal.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly display messages or debug variable contents in scripts and the shell.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ echo "Hello, world!"
+Hello, world!
+
+$ name="user"
+$ echo "User: $name"
+User: user
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!-n! to omit the trailing newline:
+    \lstinline!echo -n "Loading..."! continues on the same line.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{export}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!export NAME[=VALUE]! \\
+  \textbf{What it does:} Sets or updates an environment variable for this shell and sub-processes.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Make variables (like PATH or EDITOR) available to any program you launch from this shell.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ export PATH=$PATH:/opt/bin
+$ echo $PATH
+/usr/local/bin:...:/opt/bin
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Put \lstinline!export! lines in \lstinline!~/.bashrc! (or \lstinline!.bash_profile!) and then run \lstinline!source ~/.bashrc! to apply them automatically.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{env}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!env [OPTIONS] [COMMAND [ARG]...]! \\
+  \textbf{What it does:} Shows current environment variables or runs a command with a modified (or empty) environment.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Inspect your environment or launch programs without inherited variables.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ env | grep PATH
+PATH=/usr/local/bin:...
+
+$ env -i bash --noprofile --norc
+# starts a new shell with no environment variables set
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!env -i! to temporarily clear all variables and test behavior in a clean shell.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{alias}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!alias NAME='COMMAND'! \\
+  \textbf{What it does:} Defines a shortcut name for a longer command or set of options.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Save typing and enforce your preferred flags (e.g., always use color with \texttt{ls}).
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ alias ll='ls -lAh'
+$ ll
+drwxr-xr-x 2 user user 4.0K May  ...
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To make aliases permanent, add them to \lstinline!~/.bashrc! and reload with \lstinline!source ~/.bashrc!.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{history}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!history [OPTIONS]! \\
+  \textbf{What it does:} Lists the commands you’ve previously run in this shell session.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly find and re-run recent commands without retyping.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ history 20
+  981  ls
+  982  cd projects
+  983  git status
+
+$ !982
+# reruns command number 982 (cd projects)
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!!\$! (e.g. \lstinline!!983!) to rerun a specific entry, or \lstinline!! to repeat the very last command.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{source}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!source FILE! \\
+  \textbf{What it does:} Executes commands from FILE in the current shell (does not spawn a new process).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Reload your shell configuration (e.g., \texttt{.bashrc}) without closing the terminal.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ source ~/.bashrc
+# applies any new aliases, exports, or functions immediately
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    The shorthand dot syntax \lstinline!. ~/.bashrc! is equivalent to \lstinline!source ~/.bashrc!.
+\end{commanddetails}
+
+
+%-------------------------------------------------------------------------------
+\chapter{Permissions \& Ownership}
+%-------------------------------------------------------------------------------
+
+This chapter explains how to view and change who can access your files and how.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{chmod}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!chmod [OPTIONS] MODE FILE...! \\
+  \textbf{What it does:} Updates the read/write/execute permissions on one or more files or directories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Control who can read, write, or run your scripts and data files.
+
+  \subsection*{Modes}
+    \begin{itemize}
+      \item Numeric (e.g.\ \lstinline!755!): Owner rwx, Group r-x, Others r-x.
+      \item Symbolic (e.g.\ \lstinline!u+x!): Add execute for user.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ chmod 755 script.sh
+# Owner can rwx, others can read and execute.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use symbolic for fine-grained changes, e.g.\ \lstinline!chmod u+w,g-w file.txt!  
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{chown}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!chown [OPTIONS] OWNER[:GROUP] FILE...! \\
+  \textbf{What it does:} Changes the owner and/or group of files or directories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Ensure the correct user or group controls access, especially in shared environments.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ sudo chown user:staff file.txt
+# Now user owns the file, group is staff.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Add \lstinline!-R! to apply changes recursively to a folder and its contents.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{sudo}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!sudo [OPTIONS] COMMAND! \\
+  \textbf{What it does:} Runs a command with another user’s privileges (root by default).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Perform administrative tasks (installing software, editing system configs) without logging in as root.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ sudo apt update
+# Updates package lists as root.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!sudo visudo! to safely edit the sudoers file and avoid syntax errors.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{umask}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!umask [OPTIONS] [MASK]! \\
+  \textbf{What it does:} Sets the default permission mask for new files and directories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Define stricter or looser default permissions when you create new files/folders.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ umask 022
+# New files: 644 (-rw-r--r--), directories: 755 (drwxr-xr-x)
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Add your preferred \lstinline!umask! line to \lstinline!~/.bashrc! so it applies every session.
+\end{commanddetails}
+%-------------------------------------------------------------------------------
+\chapter{Processes \& Monitoring}
+%-------------------------------------------------------------------------------
+
+This chapter covers how to view, manage, and prioritize running processes on your system.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{ps}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!ps [OPTIONS]! \\
+  \textbf{What it does:} Shows a static snapshot of processes running in your shell or system.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly see what commands are running, their PIDs, CPU/memory usage, and ownership.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!aux!: All users, full-format listing.
+      \item \lstinline!-ef!: POSIX-style listing with parent–child relationships.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+user     2345  0.1  1.2  22500  5120 pts/0    S+   09:10   0:00 bash
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Pipe to \lstinline!grep! to filter, e.g.\  
+    \lstinline!ps aux | grep apache2! finds all Apache processes.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{top}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!top! \\
+  \textbf{What it does:} Opens an interactive, real-time view of system processes.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Monitor live CPU, memory, and process usage to spot resource hogs.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ top
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Press \texttt{P} to sort by CPU, \texttt{M} to sort by memory, \texttt{q} to quit.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{kill}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!kill [OPTIONS] PID...! \\
+  \textbf{What it does:} Sends a signal (by default SIGTERM) to one or more processes.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Gracefully or forcefully stop misbehaving processes by PID.
+
+  \subsection*{Common signals}
+    \begin{itemize}
+      \item \lstinline!-15!: SIGTERM (default, allows cleanup).  
+      \item \lstinline!-9!: SIGKILL (immediate, cannot be caught).
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ kill -9 1234
+# Force-kill process 1234 if it won’t terminate normally.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Try \lstinline!kill PID! first (no \lstinline!-9!), then escalate if the process ignores SIGTERM.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{jobs}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!jobs [OPTIONS]! \\
+  \textbf{What it does:} Lists background and suspended jobs in your current shell.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Track processes you’ve put in the background or paused with Ctrl+Z.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ sleep 100 &
+[1] 2345
+$ jobs
+[1]+  Running                 sleep 100 &
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!fg %1! to bring job 1 to the foreground, or \lstinline!bg %1! to resume in the background.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{nice} and \texttt{renice}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!nice [OPTIONS] COMMAND! \\
+  \textbf{What it does:} Launches a command with an adjusted CPU scheduling priority.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Lower-priority (higher “nice” value) jobs yield CPU to more important tasks.
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ nice -n 10 tar czf archive.tgz dir/
+# Runs tar at a lower priority.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To change priority of an existing process, use \lstinline!renice 5 -p PID! (requires appropriate permissions).
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\chapter{Networking \& Transfer}
+%-------------------------------------------------------------------------------
+
+This chapter covers basic tools for testing connectivity, configuring interfaces, and securely transferring data.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{ping}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!ping [OPTIONS] DESTINATION! \\
+  \textbf{What it does:} Sends ICMP “echo request” packets to check if a host is reachable.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Verify network connectivity and measure round-trip time to a server.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-c N!: Send N packets then stop.
+      \item \lstinline!-i SECONDS!: Wait SECONDS between each packet.
+      \item \lstinline!-W SECONDS!: Timeout in seconds for each reply.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ ping -c 4 example.com
+PING example.com (93.184.216.34): 56 data bytes
+64 bytes from 93.184.216.34: icmp_seq=0 ttl=56 time=10.2 ms
+...
+--- example.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!ping -i 0.5! for half-second intervals if you need quicker feedback.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{ip}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!ip [OPTIONS] OBJECT COMMAND! \\
+  \textbf{What it does:} Displays or modifies network interfaces, routes, and addresses.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Modern replacement for \texttt{ifconfig} and \texttt{route}, with more features.
+
+  \subsection*{Common usages}
+    \begin{itemize}
+      \item \lstinline!ip addr show!: List all interfaces and their IPs.
+      \item \lstinline!ip link set eth0 up!: Enable interface \texttt{eth0}.
+      \item \lstinline!ip route show!: Display routing table.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ ip addr show
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500
+    inet 192.168.1.10/24 brd 192.168.1.255 scope global eth0
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!ip -br addr! for a concise, “brief” summary of interfaces.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{ssh}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!ssh [OPTIONS] [USER@]HOST! \\
+  \textbf{What it does:} Opens a secure shell session on a remote machine.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Securely log in to remote servers, forward ports, and run commands.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-i KEYFILE!: Specify your private key file.
+      \item \lstinline!-p PORT!: Connect to a non-standard SSH port.
+      \item \lstinline!-L local:remote!: Forward local port to remote.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ ssh -i ~/.ssh/id_rsa user@server.example.com
+Last login: Fri May  ... on pts/0
+user@server:~$
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Add hosts and keys to \lstinline!~/.ssh/config! for shorter commands.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{scp}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!scp [OPTIONS] SOURCE [USER@]HOST:DEST! \\
+  \textbf{What it does:} Securely copies files or directories over SSH.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Transfer files between local and remote machines without setting up FTP.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-r!: Recursively copy directories.
+      \item \lstinline!-P PORT!: Specify SSH port for the remote host.
+      \item \lstinline!-C!: Enable compression during transfer.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ scp -r project/ user@host:/var/www/
+# Copies the local project folder to /var/www/ on the remote host.
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!scp -C! to speed up transfers over slow links by compressing data.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{curl}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!curl [OPTIONS] URL! \\
+  \textbf{What it does:} Transfers data to or from a server using various protocols (HTTP, FTP, etc.).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Download files, test APIs, or upload data from the command line.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-O!: Save with the remote filename.
+      \item \lstinline!-o FILE!: Save output to a specific file.
+      \item \lstinline!-I!: Fetch and display only HTTP headers.
+      \item \lstinline!-L!: Follow redirects.
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ curl -L -o latest.tar.gz https://example.com/downloads/app.tar.gz
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use \lstinline!curl -I URL! to quickly check response headers without downloading the body.
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\chapter{Archiving \& Compression}
+%-------------------------------------------------------------------------------
+
+This chapter covers how to bundle files into archives and compress or decompress them efficiently.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{tar}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!tar [OPTIONS] ARCHIVE [FILES\,...]! \\
+  \textbf{What it does:} Creates or extracts tar archives, optionally with compression.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Bundle a directory tree into a single file, with optional gzip or bzip2 compression.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!c!: Create a new archive.  
+      \item \lstinline!x!: Extract files from an archive.  
+      \item \lstinline!z!: Use gzip compression.  
+      \item \lstinline!j!: Use bzip2 compression.  
+      \item \lstinline!v!: Verbose—show files processed.  
+      \item \lstinline!f FILE!: Specify archive filename.
+    \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ tar czf archive.tgz project/
+# Create gzip-compressed archive.tgz from project/ directory
+
+$ tar xzf archive.tgz
+# Extract files from archive.tgz into the current directory
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    For bzip2 compression (smaller but slower):  
+    \lstinline!tar cjf archive.tar.bz2 project/!
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{gzip} \& \texttt{gunzip}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!gzip [OPTIONS] FILE...! / \lstinline!gunzip [OPTIONS] FILE...! \\
+  \textbf{What it does:} Compresses single files to .gz and decompresses them.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly compress or decompress individual files.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-k!: Keep original file after compression/decompression.  
+      \item \lstinline!-c!: Write output to stdout (useful in pipes).  
+      \item \lstinline!-d!: Decompress (same as gunzip).
+    \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ gzip file.txt
+# Compresses to file.txt.gz and removes original file.txt
+
+$ gunzip -k file.txt.gz
+# Decompresses to file.txt and keeps file.txt.gz
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Combine with tar:  
+    \lstinline!tar cf - project/ | gzip -c > project.tar.gz!
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{zip} \& \texttt{unzip}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!zip [OPTIONS] ARCHIVE FILE...! / \lstinline!unzip [OPTIONS] ARCHIVE! \\
+  \textbf{What it does:} Creates or extracts ZIP archives (common in Windows).
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Interoperate with Windows users or tools that prefer .zip format.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-r!: Recursively include directories.  
+      \item \lstinline!-e!: Encrypt archive (prompt for password).  
+      \item \lstinline!-l!: List contents of a ZIP file without extracting.  
+    \end{itemize}
+
+  \subsection*{Examples}
+  \begin{lstlisting}[language=bash]
+$ zip -r project.zip project/
+# Create project.zip containing the project/ folder
+
+$ unzip -l project.zip
+# List contents without extracting
+
+$ unzip project.zip
+# Extract all files into the current directory
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To unzip to a specific folder:  
+    \lstinline!unzip project.zip -d /path/to/dest/!
+\end{commanddetails}
+%-------------------------------------------------------------------------------
+\chapter{Disk Usage}
+%-------------------------------------------------------------------------------
+
+This chapter explains how to check overall filesystem space and drill down into directory sizes.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{df}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!df [OPTIONS] [FILE or MOUNTPOINT]...! \\
+  \textbf{What it does:} Shows total, used, and available space on mounted filesystems.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly see which disks or partitions are running low on space.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-h!: Human-readable sizes (KB/MB/GB).  
+      \item \lstinline!-T!: Display filesystem type.  
+      \item \lstinline!-a!: Include all filesystems, even with 0 blocks.  
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        50G   20G   28G  42% /
+tmpfs           1.9G  4.0M  1.9G   1% /run
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To check a specific mount point or directory, append its path:  
+    \lstinline!df -h /home!  
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{du}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!du [OPTIONS] [FILE or DIRECTORY]...! \\
+  \textbf{What it does:} Estimates disk usage of files and directories.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Identify which folders are consuming the most space.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-h!: Human-readable sizes.  
+      \item \lstinline!-s!: Summarize total for each argument (no per-file breakdown).  
+      \item \lstinline!-c!: Produce a grand total at the end.  
+      \item \lstinline!-d N!: Limit depth to N levels of subdirectories.  
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ du -sh *
+1.2G  Videos
+  600M  Documents
+  150M  Downloads
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    To see a sorted list of top space users, combine with \texttt{sort}:  
+    \lstinline!du -h --max-depth=1 /var | sort -h!  
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\chapter{Comparing Files}
+%-------------------------------------------------------------------------------
+
+This chapter shows how to spot differences between two files, whether by lines or raw bytes.
+
+%-------------------------------------------------------------------------------
+\section{\texttt{diff}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!diff [OPTIONS] FILE1 FILE2! \\
+  \textbf{What it does:} Compares two text files line by line and reports the changes needed to make them match.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Quickly review edits, patches, or version changes between text files or code.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-u!: Unified format (shows context lines).  
+      \item \lstinline!-c!: Context format.  
+      \item \lstinline!-i!: Ignore case differences.  
+      \item \lstinline!-w!: Ignore all whitespace differences.  
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ diff -u old.txt new.txt
+--- old.txt 2025-05-01 12:00:00
++++ new.txt 2025-05-02 08:30:00
+@@ -1,3 +1,4 @@
+ Line one
++Added this line
+ Line two
+-Line three
++Changed line three
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Pipe output to \lstinline!less! to scroll:  
+    \lstinline!diff -u old.txt new.txt | less!
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\section{\texttt{cmp}}
+%-------------------------------------------------------------------------------
+\begin{cmdbox}
+  \textbf{Syntax:} \lstinline!cmp [OPTIONS] FILE1 FILE2! \\
+  \textbf{What it does:} Compares two files byte by byte and reports the first difference or all differences.
+\end{cmdbox}
+\begin{commanddetails}
+  \subsection*{Why use it?}
+    Verify binary files are identical or pinpoint exact byte offsets where they differ.
+
+  \subsection*{Common options}
+    \begin{itemize}
+      \item \lstinline!-l!: List all differing byte positions and values.  
+      \item \lstinline!-s!: Silent mode (no output, just return code).  
+    \end{itemize}
+
+  \subsection*{Example}
+  \begin{lstlisting}[language=bash]
+$ cmp -l file1.bin file2.bin
+   12  101  102
+   45  255  254
+  \end{lstlisting}
+
+  \subsection*{Tip}
+    Use the exit status to script comparisons:  
+    \lstinline!cmp -s file1 file2 && echo "Match" || echo "Differ"!
+\end{commanddetails}
+
+%-------------------------------------------------------------------------------
+\appendix
+\chapter{Cheat Sheet}
+%-------------------------------------------------------------------------------
+
+\begingroup
+  \setlength{\tabcolsep}{4pt} % reduced spacing between columns
+  \renewcommand{\arraystretch}{1.05}
+  \rowcolors{2}{cmdframe!20}{white}
+  \small
+
+  \begin{longtable}{>{\ttfamily}l l p{4.8cm}}
+    \caption{Common Linux Commands Cheat Sheet}\\
+    \toprule
+    \rowcolor{cmdframe!30} \textbf{Command} & \textbf{Key Flags} & \textbf{Purpose} \\
+    \midrule\endfirsthead
+    \multicolumn{3}{l}{\small\slshape Continued from previous page}\\
+    \rowcolor{cmdframe!30} \textbf{Command} & \textbf{Key Flags} & \textbf{Purpose} \\
+    \midrule\endhead
+    \midrule\multicolumn{3}{r}{\small\slshape Continued on next page}\\\endfoot
+    \bottomrule\endlastfoot
+    pwd      & —           & Print the full path of the current directory. \\
+    cd       & —           & Change to a different directory. \\
+    ls       & \texttt{-l, -a, -h} & List files with details, hidden files, human-readable sizes. \\
+    tree     & \texttt{-L, -d}     & Show directory structure as a tree (limit depth, directories only). \\
+    file     & \texttt{-i}         & Identify file type or MIME type. \\
+    cp       & \texttt{-r, -i, -v} & Copy files/directories recursively, prompt, verbose. \\
+    mv       & \texttt{-i, -n, -v} & Move/rename safely, no overwrite, verbose. \\
+    rm       & \texttt{-r, -f, -i} & Remove recursively, force, or prompt. \\
+    mkdir    & \texttt{-p, -v}     & Create directories with parents, verbose. \\
+    rmdir    & —           & Remove empty directories only. \\
+    touch    & \texttt{-c}         & Create or update file timestamps without creating new. \\
+    cat      & —           & Concatenate and display file contents. \\
+    head     & \texttt{-n, -c}     & Show first N lines or bytes of a file. \\
+    tail     & \texttt{-n, -f}     & Show last N lines or follow file updates. \\
+    less     & —           & View and search through files interactively. \\
+    nano     & —           & Simple terminal text editor. \\
+    grep     & \texttt{-R, -i, -n, -C} & Search text patterns recursively, ignore case, show line numbers, context. \\
+    find     & \texttt{-name, -type, -mtime, -exec} & Locate files by name, type, date; run commands on results. \\
+    locate   & —           & Fast filename lookup using database. \\
+    wc       & \texttt{-l, -w, -m} & Count lines, words, and characters. \\
+    sort     & \texttt{-n, -r, -k} & Sort numerically, reverse, by column. \\
+    echo     & \texttt{-n}         & Display text or variable values without newline. \\
+    export   & —           & Set environment variables for child processes. \\
+    env      & \texttt{-i}         & Show or run command in a clean environment. \\
+    alias    & —           & Define command shortcuts in shell. \\
+    history  & —           & List and reuse past commands. \\
+    source   & —           & Execute a script in the current shell session. \\
+    chmod    & \texttt{-R, u+x, g-w} & Change file permissions recursively or symbolically. \\
+    chown    & \texttt{-R}         & Change file owner and group recursively. \\
+    sudo     & —           & Run commands with elevated (root) privileges. \\
+    umask    & —           & Set default permission mask for new files. \\
+    ps       & \texttt{aux, -ef}   & Show snapshot of running processes (detailed, POSIX). \\
+    top      & —           & Real-time interactive process viewer. \\
+    kill     & \texttt{-15, -9}    & Send terminate or kill signals to processes. \\
+    jobs     & —           & List background and suspended jobs in shell. \\
+    nice     & \texttt{-n}         & Start a process with modified CPU priority. \\
+    renice   & \texttt{-n, -p}     & Adjust priority of running processes. \\
+    ping     & \texttt{-c, -i, -W} & Send ICMP echo requests; count, interval, timeout. \\
+    ip       & \texttt{addr, link, route, -br} & Manage interfaces, addresses, routes; brief output. \\
+    ssh      & \texttt{-i, -p, -L} & Secure shell: keyfile, port, port forwarding. \\
+    scp      & \texttt{-r, -P, -C} & Secure copy: recursive, port, compression. \\
+    curl     & \texttt{-O, -o, -I, -L} & Transfer data: save files, headers only, follow redirects. \\
+    tar      & \texttt{c, x, z, j, v, f} & Create/extract archives with gzip/bzip2, verbose, specify file. \\
+    gzip     & \texttt{-k, -c, -d} & Compress or decompress .gz files, keep originals, output to stdout. \\
+    unzip    & \texttt{-l, -d}     & List or extract ZIP archives to specified directory. \\
+    df       & \texttt{-h, -T, -a} & Report filesystem disk usage, human-readable, type, all. \\
+    du       & \texttt{-h, -s, -c, -d} & Estimate directory sizes, human-readable, summary, total, depth. \\
+    diff     & \texttt{-u, -c, -i, -w} & Compare text files with context, ignore case/whitespace. \\
+    cmp      & \texttt{-l, -s}     & Compare files byte by byte, list offsets, silent mode. \\
+  \end{longtable}
+\endgroup
+
+%-------------------------------------------------------------------------------
+\chapter*{References \& Sources}
+\addcontentsline{toc}{chapter}{References \& Sources}
+
+\begin{itemize}
+  \item GNU Coreutils Manual — \url{https://www.gnu.org/software/coreutils/manual/coreutils.html}
+  \item Linux Man Pages — \url{https://man7.org/linux/man-pages/}
+  \item TLDP Advanced Bash Guide — \url{https://tldp.org/LDP/abs/html/}
+  \item Stack Overflow — \url{https://stackoverflow.com}
+  \item Personal experience and experimentation
+\end{itemize}
+
+
+\end{document}
