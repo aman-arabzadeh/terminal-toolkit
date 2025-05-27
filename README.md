@@ -1,5 +1,7 @@
 
 # 🧰 Terminal Toolkit: 51 Essential Linux Commands
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 I’m excited to share something I’ve always wanted to make for myself — and it ended up becoming a short guidebook!
 
 A beginner-friendly (but also advanced-user approved) guide to 51 of the most useful Linux commands — Some I use almost every day some not.
