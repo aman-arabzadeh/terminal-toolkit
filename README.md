@@ -11,7 +11,7 @@ Written to be simple, practical, and easy to reference.
 
 ---
 
-## 📘 What's Inside
+##  What's Inside
 
 - Real-world examples and syntax
 - Commands for file operations, navigation, search, permissions, networking, and more
@@ -28,7 +28,7 @@ Written to be simple, practical, and easy to reference.
   git clone https://github.com/aman-arabzadeh/terminal-toolkit.git
 
 ## Contribute
-If you find it useful, feel free to star ⭐, fork 🔁, or share. Feedback welcome!
+If you find it useful, feel free to star , fork , or share. Feedback welcome!
 
 
 ---
